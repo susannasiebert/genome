@@ -305,7 +305,7 @@ sub collect_individual_alignments {
                 annotation_build_id => ($self->annotation_build_id || undef),
                 instrument_data_id => $i->id,
                 filter_name => ($filters->{$i->id} || undef),
-                test_name => $ENV{GENOME_SOFTWARE_RESULT_TEST_NAME} || undef,
+                test_name => $self->test_name,
                 users => $result_users,
                 %$segment_param,
             );
