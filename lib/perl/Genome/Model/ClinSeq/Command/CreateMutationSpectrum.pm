@@ -255,7 +255,13 @@ sub get_mutation_spectrum_sequence_context_result {
         return;
     }
     my $somvar_build                = $self->somvar_build;
-    my $reference_sequence_build    = $somvar_build->tumor_model->reference_sequence_build;
+    my $reference_sequence_build;
+    if ($somvar_build->isa('Genome::Model::Build::SomaticVariation')) {
+        $reference_sequence_build = $somvar_build->tumor_model->reference_sequence_build;
+    }
+    else {
+        $reference_sequence_build = $somvar_build->model->reference_sequence_build;
+    }
     my $reference_fasta_path        = $reference_sequence_build->full_consensus_path('fa');
     my $mssc_file4plot              = $sub_outdir2 . $final_name . ".data.tsv";
     my $mssc_outfile                = $sub_outdir2 . $final_name . ".mutation-spectrum-sequence-context.pdf";
