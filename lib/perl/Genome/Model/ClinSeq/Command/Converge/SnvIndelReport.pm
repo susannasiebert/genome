@@ -436,11 +436,28 @@ sub gather_variants {
             unless (-e $snvs_file && -e $indels_file) {
                 die $self->error_message("Could not find expected file:\n$snvs_file\n$indels_file");
             }
-            $bed_files{$snvs_file}{somatic_build_id}   = $somatic_build_id;
-            $bed_files{$snvs_file}{var_type}           = "snv";
-            $bed_files{$snvs_file}{data_type}          = $somatic_build_type;
-            $bed_files{$snvs_file}{tier}               = $tier;
-            $bed_files{$snvs_file}{vcf_file}           = "$somatic_build_dir/variants/snvs.annotated.vcf.gz";
+            $bed_files{$snvs_file}{somatic_build_id} = $somatic_build_id;
+            $bed_files{$snvs_file}{var_type}         = "snv";
+            $bed_files{$snvs_file}{data_type}        = $somatic_build_type;
+            $bed_files{$snvs_file}{tier}             = $tier;
+            my $annotated_snvs_vcf_file              = File::Spec->join($somatic_build_dir, 'variants', 'snvs.annotated.vcf.gz');
+            unless (-e $annotated_snvs_vcf_file) {
+                my $snvs_vcf_file = File::Spec->join($somatic_build_dir, 'variants', 'snvs.vcf.gz');
+                my $annotation_vcf = $somatic_build->previously_discovered_variations_build->snvs_vcf;
+                my $vcf_annotator = Genome::Model::Tools::Joinx::VcfAnnotate->create(
+                    input_file => $snvs_vcf_file,
+                    annotation_file => $annotation_vcf,
+                    output_file => $annotated_snvs_vcf_file,
+                    use_bgzip => 1,
+                    info_fields => "",
+                    info => "",
+                    use_version => Genome::Model::Tools::Joinx->get_default_version,
+                );
+                unless ($vcf_annotator->execute) {
+                    $self->fatal_message("Failed to execute Joinx Vcf annotation for vcf file (%s) using db (%s)", $snvs_vcf_file, $annotation_vcf);
+                }
+            }
+            $bed_files{$snvs_file}{vcf_file}           = $annotated_snvs_vcf_file;
             $bed_files{$indels_file}{somatic_build_id} = $somatic_build_id;
             $bed_files{$indels_file}{var_type}         = "indel";
             $bed_files{$indels_file}{data_type}        = $somatic_build_type;
