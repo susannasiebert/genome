@@ -158,10 +158,10 @@ sub get_tumor_normal_bam {
 sub reference_build {
     my $self                  = shift;
     my $somvar_build          = shift;
-    my $normal_refalign_build = $somvar_build->normal_build if ($somvar_build);
-    my $tumor_refalign_build  = $somvar_build->tumor_build if ($somvar_build);
+    my $normal_refalign_build = $somvar_build->normal_build if ($somvar_build && $somvar_build->isa('Genome::Model::Build::SomaticVariation'));
+    my $tumor_refalign_build = $somvar_build->tumor_build if ($somvar_build && $somvar_build->isa('Genome::Model::Build::SomaticVariation'));
     my @input_builds          = ($normal_refalign_build, $tumor_refalign_build, $somvar_build);
-    for my $build (@input_builds) {
+    for my $build (@input_builds){
         next unless $build;
         my $m = $build->model;
         if ($m->can("reference_sequence_build")) {

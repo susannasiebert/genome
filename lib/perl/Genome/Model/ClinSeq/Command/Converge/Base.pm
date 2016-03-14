@@ -327,10 +327,10 @@ sub resolve_input_builds {
     my $exome_build                 = $clinseq_build->exome_build;
     my $tumor_rnaseq_build          = $clinseq_build->tumor_rnaseq_build;
     my $normal_rnaseq_build         = $clinseq_build->normal_rnaseq_build;
-    my $wgs_normal_refalign_build   = $wgs_build->normal_build if ($wgs_build);
-    my $wgs_tumor_refalign_build    = $wgs_build->tumor_build if ($wgs_build);
-    my $exome_normal_refalign_build = $exome_build->normal_build if ($exome_build);
-    my $exome_tumor_refalign_build  = $exome_build->tumor_build if ($exome_build);
+    my $wgs_normal_refalign_build = $wgs_build->normal_build if ($wgs_build && $wgs_build->isa('Genome::Model::Build::SomaticVariation'));
+    my $wgs_tumor_refalign_build = $wgs_build->tumor_build if ($wgs_build && $wgs_build->isa('Genome::Model::Build::SomaticVariation'));
+    my $exome_normal_refalign_build = $exome_build->normal_build if ($exome_build && $exome_build->isa('Genome::Model::Build::SomaticVariation'));
+    my $exome_tumor_refalign_build = $exome_build->tumor_build if ($exome_build && $exome_build->isa('Genome::Model::Build::SomaticVariation'));
     my @builds                      = (
         $wgs_build, $exome_build, $tumor_rnaseq_build, $normal_rnaseq_build, $wgs_normal_refalign_build,
         $wgs_tumor_refalign_build, $exome_normal_refalign_build, $exome_tumor_refalign_build

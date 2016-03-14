@@ -166,10 +166,10 @@ sub summarize_clinseq_build {
     $exome_somvar_build          = $clinseq_build->exome_build;
     $tumor_rnaseq_build          = $clinseq_build->tumor_rnaseq_build;
     $normal_rnaseq_build         = $clinseq_build->normal_rnaseq_build;
-    $wgs_normal_refalign_build   = $wgs_somvar_build->normal_build if ($wgs_somvar_build);
-    $wgs_tumor_refalign_build    = $wgs_somvar_build->tumor_build if ($wgs_somvar_build);
-    $exome_normal_refalign_build = $exome_somvar_build->normal_build if ($exome_somvar_build);
-    $exome_tumor_refalign_build  = $exome_somvar_build->tumor_build if ($exome_somvar_build);
+    $wgs_normal_refalign_build   = $wgs_somvar_build->normal_build if ($wgs_somvar_build && $wgs_somvar_build->isa('Genome::Model::Build::SomaticVariation'));
+    $wgs_tumor_refalign_build    = $wgs_somvar_build->tumor_build if ($wgs_somvar_build && $wgs_somvar_build->isa('Genome::Model::Build::SomaticVariation'));
+    $exome_normal_refalign_build = $exome_somvar_build->normal_build if ($exome_somvar_build && $exome_somvar_build->isa('Genome::Model::Build::SomaticVariation'));
+    $exome_tumor_refalign_build  = $exome_somvar_build->tumor_build if ($exome_somvar_build && $exome_somvar_build->isa('Genome::Model::Build::SomaticVariation'));
 
     #set the build types
     my %data_types;
@@ -1669,10 +1669,10 @@ sub _set_data_types {
     my $exome_somvar_build          = $clinseq_build->exome_build;
     my $tumor_rnaseq_build          = $clinseq_build->tumor_rnaseq_build;
     my $normal_rnaseq_build         = $clinseq_build->normal_rnaseq_build;
-    my $wgs_normal_refalign_build   = $wgs_somvar_build->normal_build if ($wgs_somvar_build);
-    my $wgs_tumor_refalign_build    = $wgs_somvar_build->tumor_build if ($wgs_somvar_build);
-    my $exome_normal_refalign_build = $exome_somvar_build->normal_build if ($exome_somvar_build);
-    my $exome_tumor_refalign_build  = $exome_somvar_build->tumor_build if ($exome_somvar_build);
+    my $wgs_normal_refalign_build   = $wgs_somvar_build->normal_build if ($wgs_somvar_build && $wgs_somvar_build->isa('Genome::Model::Build::SomaticVariation'));
+    my $wgs_tumor_refalign_build    = $wgs_somvar_build->tumor_build if ($wgs_somvar_build && $wgs_somvar_build->isa('Genome::Model::Build::SomaticVariation'));
+    my $exome_normal_refalign_build = $exome_somvar_build->normal_build if ($exome_somvar_build && $exome_somvar_build->isa('Genome::Model::Build::SomaticVariation'));
+    my $exome_tumor_refalign_build  = $exome_somvar_build->tumor_build if ($exome_somvar_build && $exome_somvar_build->isa('Genome::Model::Build::SomaticVariation'));
     if ($wgs_tumor_refalign_build) {
         $data_types->{$wgs_tumor_refalign_build->id} = "WGS";
     }

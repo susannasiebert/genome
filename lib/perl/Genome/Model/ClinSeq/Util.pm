@@ -1201,10 +1201,10 @@ sub resolve_reference_sequence_build {
     $exome_somvar_build          = $clinseq_build->exome_build;
     $tumor_rnaseq_build          = $clinseq_build->tumor_rnaseq_build;
     $normal_rnaseq_build         = $clinseq_build->normal_rnaseq_build;
-    $wgs_normal_refalign_build   = $wgs_somvar_build->normal_build if ($wgs_somvar_build);
-    $wgs_tumor_refalign_build    = $wgs_somvar_build->tumor_build if ($wgs_somvar_build);
-    $exome_normal_refalign_build = $exome_somvar_build->normal_build if ($exome_somvar_build);
-    $exome_tumor_refalign_build  = $exome_somvar_build->tumor_build if ($exome_somvar_build);
+    $wgs_normal_refalign_build   = $wgs_somvar_build->normal_build if ($wgs_somvar_build && $wgs_somvar_build->isa('Genome::Model::Build::SomaticVariation'));
+    $wgs_tumor_refalign_build    = $wgs_somvar_build->tumor_build if ($wgs_somvar_build && $wgs_somvar_build->isa('Genome::Model::Build::SomaticVariation'));
+    $exome_normal_refalign_build = $exome_somvar_build->normal_build if ($exome_somvar_build && $exome_somvar_build->isa('Genome::Model::Build::SomaticVariation'));
+    $exome_tumor_refalign_build  = $exome_somvar_build->tumor_build if ($exome_somvar_build && $exome_somvar_build->isa('Genome::Model::Build::SomaticVariation'));
 
     my @input_builds = (
         $wgs_normal_refalign_build,   $wgs_tumor_refalign_build,   $wgs_somvar_build,
