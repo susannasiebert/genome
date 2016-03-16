@@ -306,15 +306,15 @@ sub createSnvOutfile {
 sub get_indel_files_names {
     my $self        = shift;
     my $indel_files = shift;
-    my $build_dir   = shift;
-    $indel_files->{1}{file} = $build_dir . "/effects/indels.hq.novel.tier1.v2.bed";
-    $indel_files->{1}{tier} = "tier1";
-    $indel_files->{2}{file} = $build_dir . "/effects/indels.hq.novel.tier2.v2.bed";
-    $indel_files->{2}{tier} = "tier2";
-    $indel_files->{3}{file} = $build_dir . "/effects/indels.hq.novel.tier3.v2.bed";
-    $indel_files->{3}{tier} = "tier3";
-    $indel_files->{4}{file} = $build_dir . "/effects/indels.hq.novel.tier4.v2.bed";
-    $indel_files->{4}{tier} = "tier4";
+    my $build_dir = shift;
+    for my $tier (1..4) {
+        my $indel_file = File::Spec->join($build_dir, 'effects', "indels.hq.novel.tier$tier.v2.bed");
+        unless (-e $indel_file) {
+            $indel_file = File::Spec->join($build_dir, 'effects', "indels.hq.tier$tier.bed");
+        }
+        $indel_files->{$tier}{file} = $indel_file;
+        $indel_files->{$tier}{tier} = "tier$tier";
+    }
 }
 
 sub get_snv_files_names {

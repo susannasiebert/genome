@@ -433,8 +433,14 @@ sub gather_variants {
         foreach my $tier (@tiers) {
             my $snvs_file   = "$somatic_build_dir/effects/snvs.hq.novel.$tier.v2.bed";
             my $indels_file = "$somatic_build_dir/effects/indels.hq.novel.$tier.v2.bed";
-            unless (-e $snvs_file && -e $indels_file) {
-                die $self->error_message("Could not find expected file:\n$snvs_file\n$indels_file");
+            unless (-e $snvs_file) {
+                die $self->error_message("Could not find expected file:\n$snvs_file");
+            }
+            unless (-e $indels_file) {
+                $indels_file = "$somatic_build_dir/effects/indels.hq.$tier.bed";
+                unless (-e $indels_file) {
+                    die $self->error_message("Could not find expected file:\n$indels_file");
+                }
             }
             $bed_files{$snvs_file}{somatic_build_id} = $somatic_build_id;
             $bed_files{$snvs_file}{var_type}         = "snv";
