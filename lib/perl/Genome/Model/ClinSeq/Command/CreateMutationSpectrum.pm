@@ -90,12 +90,15 @@ sub __errors__ {
 }
 
 sub get_final_name {
-    my $self            = shift;
-    my $somvar_build    = shift;
-    my $somvar_build_id = $somvar_build->model->id;
-    my $final_name      = $somvar_build->model->subject->name if ($somvar_build->model->subject->name);
-    $final_name = $somvar_build->model->subject->individual->common_name
-        if ($somvar_build->model->subject->individual->common_name);
+    my $self          = shift;
+    my $somatic_build = shift;
+    my $final_name = $somatic_build->model->subject->name if ($somatic_build->model->subject->name);
+    if ($somatic_build->isa('Genome::Model::Build::SomaticVariation')) {
+        $final_name = $somatic_build->model->subject->individual->common_name if ($somatic_build->model->subject->individual->common_name);
+    }
+    elsif ($somatic_build->isa('Genome::Model::Build::SomaticValidation')) {
+        $final_name = $somatic_build->model->subject->common_name if ($somatic_build->model->subject->common_name);
+    }
     return $final_name;
 }
 
