@@ -129,6 +129,11 @@ class Genome::Model::ClinSeq::Command::Converge::SnvIndelReport {
         _wgs_indel_variant_sources_file   => {is => 'FilesystemPath',},
         _exome_indel_variant_sources_file => {is => 'FilesystemPath',},
     ],
+    has_optional => [
+        working_dir => {
+            is => 'FilesystemPath',
+        },
+    ],
     has_param => [
         lsf_resource => {
             value => q{-R 'select[mem>12000] rusage[mem=12000]' -M 12000000},
@@ -222,19 +227,19 @@ sub __errors__ {
 sub execute {
     my $self = shift;
 
-    #Add trailing '/' to outdir if needed
-    unless ($self->outdir =~ /\/$/) {
-        my $outdir = $self->outdir . "/";
-        $self->outdir($outdir);
-    }
-
+    my $working_dir;
     #If the user specified, perform all file I/O in /tmp and copy result over at the end
-    my $original_outdir = $self->outdir;
     if ($self->tmp_space) {
-        my $outdir = Genome::Sys->create_temp_directory;
-        $outdir .= "/" unless ($outdir =~ /\/$/);
-        $self->outdir($outdir);
+        $working_dir = Genome::Sys->create_temp_directory;
     }
+    else {
+        $working_dir = $self->outdir;
+    }
+    #Add trailing '/' to working_dir if needed
+    unless ($working_dir =~ /\/$/) {
+        $working_dir .=  '/';
+    }
+    $self->working_dir($working_dir);
 
     #Get the case name for this set of builds, if more than one are found, warn the user
     my $case_name = $self->get_case_name;
@@ -251,7 +256,7 @@ sub execute {
     }
     my $annotation_build_name = $self->annotation_build->name;
     $self->status_message("Using annotation build: $annotation_build_name");
-    my $bed_dir = $self->outdir . "bed_files/";
+    my $bed_dir = $self->working_dir . "bed_files/";
     my $result  = $self->gather_variants(
         '-somatic_builds' => \%somatic_builds,
         '-bed_dir'        => $bed_dir
@@ -370,13 +375,13 @@ sub execute {
 
     #If the user specified, perform all file I/O in /tmp and copy result over at the end
     if ($self->tmp_space) {
-        my $cp_cmd = "cp -fr " . $self->outdir . "* $original_outdir";
+        my $cp_cmd = sprintf("cp -fr %s* %s", $self->working_dir, $self->outdir);
         Genome::Sys->shellcmd(cmd => $cp_cmd);
     }
 
     if ($self->summarize) {
         my $summarize = Genome::Model::ClinSeq::Command::Converge::SummarizeSnvIndelReport->create(
-            outdir            => $original_outdir,
+            outdir            => $self->outdir,
             min_mq            => $self->mq,
             min_bq            => $self->bq,
             filtered_report   => $result_files->{final_filtered_clean_tsv},
@@ -385,7 +390,13 @@ sub execute {
         $summarize->execute();
     }
     # Set the path to the final output file used as a workflow link to downstream steps
-    $self->final_filtered_coding_clean_tsv($result_files->{final_filtered_coding_clean_tsv});
+    my $final_filtered_coding_clean_tsv = $result_files->{final_filtered_coding_clean_tsv};
+    if ($self->tmp_space) {
+        my $working_dir = $self->working_dir;
+        my $outdir = $self->outdir;
+        $final_filtered_coding_clean_tsv =~ s/$working_dir/$outdir\//;
+    }
+    $self->final_filtered_coding_clean_tsv($final_filtered_coding_clean_tsv);
     return 1;
 }
 
@@ -400,7 +411,7 @@ sub print_subject_table {
     my %args         = @_;
     my $align_builds = $args{'-align_builds'};
 
-    my $outfile = $self->outdir . "subjects_legend.txt";
+    my $outfile = $self->working_dir . "subjects_legend.txt";
     my $out_fh  = Genome::Sys->open_file_for_writing($outfile);
     print $out_fh
         "name\tprefix\ttime_point_unit\ttime_point_value\ttime_point_position\tsample_type\torder\ttissue_desc\ttissue_label\textraction_type\textraction_label\n";
@@ -619,7 +630,7 @@ sub print_grand_anno_table {
     my $header   = $args{'-header'};
 
     #Also produce a joined annotated file with a single header and all snvs and indels combined
-    my $grand_anno_file = $self->outdir . "variants.all.anno";
+    my $grand_anno_file = $self->working_dir . "variants.all.anno";
     if (-e $grand_anno_file) {
         $self->warning_message("using pre-generated file: $grand_anno_file");
     }
@@ -833,7 +844,7 @@ sub add_per_lib_read_counts {
     }
     my $header_prefixes = join(",", @prefixes);
 
-    my $output_file = $self->outdir . "/variants.all.anno.per.library.readcounts";
+    my $output_file = $self->working_dir . "/variants.all.anno.per.library.readcounts";
     if (-e $output_file) {
         $self->warning_message("using pre-generated per-library bam read-count file: $output_file");
     }
@@ -1247,13 +1258,13 @@ sub get_result_files {
     my $result_files;
 
     #Write out final tsv files (filtered and unfiltered), a clean version with useless columns removed, and an Excel spreadsheet version of the final file
-    my $final_unfiltered_tsv            = $self->outdir . "$case_name" . "_final_unfiltered.tsv";             #OUT1
-    my $final_unfiltered_clean_tsv      = $self->outdir . "$case_name" . "_final_unfiltered_clean.tsv";       #OUT1b
-    my $final_filtered_tsv              = $self->outdir . "$case_name" . "_final_filtered.tsv";               #OUT2
-    my $final_filtered_clean_tsv        = $self->outdir . "$case_name" . "_final_filtered_clean.tsv";         #OUT3
-    my $final_filtered_coding_clean_tsv = $self->outdir . "$case_name" . "_final_filtered_coding_clean.tsv";  #OUT4
-    my $final_filtered_clean_xls        = $self->outdir . "$case_name" . "_final_filtered_clean.xls";         #OUT5
-    my $final_filtered_coding_clean_xls = $self->outdir . "$case_name" . "_final_filtered_coding_clean.xls";  #OUT6
+    my $final_unfiltered_tsv            = $self->working_dir . "$case_name" . "_final_unfiltered.tsv";             #OUT1
+    my $final_unfiltered_clean_tsv      = $self->working_dir . "$case_name" . "_final_unfiltered_clean.tsv";       #OUT1b
+    my $final_filtered_tsv              = $self->working_dir . "$case_name" . "_final_filtered.tsv";               #OUT2
+    my $final_filtered_clean_tsv        = $self->working_dir . "$case_name" . "_final_filtered_clean.tsv";         #OUT3
+    my $final_filtered_coding_clean_tsv = $self->working_dir . "$case_name" . "_final_filtered_coding_clean.tsv";  #OUT4
+    my $final_filtered_clean_xls        = $self->working_dir . "$case_name" . "_final_filtered_clean.xls";         #OUT5
+    my $final_filtered_coding_clean_xls = $self->working_dir . "$case_name" . "_final_filtered_coding_clean.xls";  #OUT6
 
     #Store the result files paths and pass out to be used in the visualization step
     $result_files->{final_unfiltered_tsv}            = $final_unfiltered_tsv;
@@ -1550,13 +1561,13 @@ sub create_plots {
         my $prefix_string           = join(" ", @prefixes);
         my $combined_vaf_col_string = join(" ", @combined_vaf_cols);
 
-        my $outdir1 = $self->outdir . "filtered_pdfs/";
+        my $outdir1 = $self->working_dir . "filtered_pdfs/";
         mkdir($outdir1);
         my $r_cmd1 =
             "$r_script $case_name $final_filtered_clean_tsv \"$prefix_string\" \"$combined_vaf_col_string\" \"$target_gene_list_name\" $outdir1 \"$sample_types_string\" \"$timepoint_names_string\" \"$timepoint_positions_string\" $vaf_cols_string";
         Genome::Sys->shellcmd(cmd => $r_cmd1);
 
-        my $outdir2 = $self->outdir . "filtered_coding_pdfs/";
+        my $outdir2 = $self->working_dir . "filtered_coding_pdfs/";
         mkdir($outdir2);
         my $r_cmd2 =
             "$r_script $case_name $final_filtered_coding_clean_tsv \"$prefix_string\" \"$combined_vaf_col_string\" \"$target_gene_list_name\" $outdir2 \"$sample_types_string\" \"$timepoint_names_string\" \"$timepoint_positions_string\" $vaf_cols_string";
