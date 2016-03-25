@@ -129,7 +129,17 @@ class Genome::Model::ClinSeq::Command::Converge::SnvIndelReport {
         _wgs_indel_variant_sources_file   => {is => 'FilesystemPath',},
         _exome_indel_variant_sources_file => {is => 'FilesystemPath',},
     ],
-    has_param => [lsf_resource => {value => q{-R 'select[mem>12000] rusage[mem=12000]' -M 12000000},},],
+    has_param => [
+        lsf_resource => {
+            value => q{-R 'select[mem>12000] rusage[mem=12000]' -M 12000000},
+        },
+    ],
+    has_output => [
+        final_filtered_coding_clean_tsv => {
+            is => 'Text',
+            doc => 'The final tier1 output variants file used by downstream clin-seq pipeline steps.',
+        },
+    ],
     doc =>
         'converge SNV and InDels from multiple clin-seq builds, annotate, bam-readcount, etc. and summarize into a single spreadsheet',
 };
@@ -374,7 +384,8 @@ sub execute {
         );
         $summarize->execute();
     }
-
+    # Set the path to the final output file used as a workflow link to downstream steps
+    $self->final_filtered_coding_clean_tsv($result_files->{final_filtered_coding_clean_tsv});
     return 1;
 }
 
@@ -1331,6 +1342,7 @@ sub print_final_files {
             $header = 0;
             my $c = 0;
             foreach my $col (@line) {
+                $col = 'mapped_gene_name' if ($col eq 'default_gene_name');
                 $columns{$col}{c} = $c;
                 $c++;
             }
