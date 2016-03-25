@@ -1277,7 +1277,13 @@ sub get_ref_align_builds {
     foreach my $somatic_build_id (keys %{$somatic_builds}) {
         my $build_type    = $somatic_builds->{$somatic_build_id}->{type}           || "NA";
         my $somatic_build = $somatic_builds->{$somatic_build_id}->{build}          || "NA";
-        my $subject_icn   = $somatic_build->model->subject->individual_common_name || "NA";
+        my $subject_icn = 'NA';
+        if ($somatic_build->isa('Genome::Model::Build::SomaticVariation')) {
+            $subject_icn = $somatic_build->model->subject->individual_common_name;
+        }
+        elsif ($somatic_build->isa('Genome::Model::Build::SomaticValidation')) {
+            $subject_icn = $somatic_build->model->subject->common_name;
+        }
         my @builds = ($somatic_build->normal_build, $somatic_build->tumor_build);
         foreach my $build (@builds) {
             my $subject_name        = $build->subject->name        || "NA";
