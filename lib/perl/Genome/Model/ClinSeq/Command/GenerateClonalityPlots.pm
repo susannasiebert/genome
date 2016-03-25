@@ -10,7 +10,7 @@ class Genome::Model::ClinSeq::Command::GenerateClonalityPlots {
     is        => ['Command::V2', 'Genome::Model::ClinSeq::Util'],
     has_input => [
         somatic_var_build => {
-            is          => 'Genome::Model::Build::SomaticVariation',
+            is          => 'Genome::Model::Build',
             id_by       => 'somatic_var_build_id',
             doc         => 'Build ID for a somatic variation model',
             is_optional => 1

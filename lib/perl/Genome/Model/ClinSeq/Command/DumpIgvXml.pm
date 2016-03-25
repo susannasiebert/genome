@@ -459,7 +459,7 @@ sub generate_track_xml {
     if ($pp_type eq "reference alignment") {
         $data_type = $sequence_type;
     }
-    elsif ($pp_type eq "somatic variation") {
+    elsif ($pp_type eq 'somatic variation' || $pp_type eq 'somatic validation') {
         $data_type = "Unknown";
         if ($pp_name =~ /exome/i) {
             $data_type = "Exome";
@@ -503,7 +503,7 @@ sub generate_track_xml {
         $resource_file = $bam_file;
 
     }
-    elsif ($resource_type eq 'bed' && $pp_type eq 'somatic variation') {
+    elsif ($resource_type eq 'bed' && ($pp_type eq 'somatic variation' || $pp_type eq 'somatic validation')) {
         #User specifies actual file name - will be used to find file in a somatic variation result
         unless ($bed_file) {
             $self->fatal_message(

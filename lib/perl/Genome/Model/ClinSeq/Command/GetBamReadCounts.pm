@@ -16,7 +16,7 @@ class Genome::Model::ClinSeq::Command::GetBamReadCounts {
         },
 
         wgs_som_var_build => {
-            is          => 'Genome::Model::Build::SomaticVariation',
+            is          => 'Genome::Model::Build',
             is_optional => 1,
             doc         => 'Whole genome sequence (WGS) somatic variation build'
         },

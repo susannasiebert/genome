@@ -10,7 +10,7 @@ class Genome::Model::ClinSeq::Command::SummarizeSvs {
     is        => ['Command::V2', 'Genome::Model::ClinSeq::Util'],
     has_input => [
         builds => {
-            is                  => 'Genome::Model::Build::SomaticVariation',
+            is                  => 'Genome::Model::Build',
             is_many             => 1,
             shell_args_position => 1,
             require_user_verify => 0,

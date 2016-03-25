@@ -18,7 +18,7 @@ class Genome::Model::ClinSeq::Command::CreateMutationDiagrams {
             doc => 'data from COSMIC (catalog of somatic mutations in cancer',
         },
         builds => {
-            is                  => 'Genome::Model::Build::SomaticVariation',
+            is                  => 'Genome::Model::Build',
             is_many             => 1,
             shell_args_position => 1,
             require_user_verify => 0,

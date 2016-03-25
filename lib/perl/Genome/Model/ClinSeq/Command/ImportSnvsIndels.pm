@@ -8,13 +8,13 @@ class Genome::Model::ClinSeq::Command::ImportSnvsIndels {
     is        => ['Command::V2', 'Genome::Model::ClinSeq::Util'],
     has_input => [
         wgs_build => {
-            is          => 'Genome::Model::Build::SomaticVariation',
+            is          => 'Genome::Model::Build',
             is_many     => 0,
             is_optional => 1,
             doc         => 'wgs somatic variation build(s) to get SNVs indels',
         },
         exome_build => {
-            is          => 'Genome::Model::Build::SomaticVariation',
+            is          => 'Genome::Model::Build',
             is_many     => 0,
             is_optional => 1,
             doc         => 'exome somatic variation build(s) to get SNVs indels',

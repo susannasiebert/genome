@@ -8,7 +8,7 @@ class Genome::Model::ClinSeq::Command::CreateMutationSpectrum {
     is        => ['Command::V2', 'Genome::Model::ClinSeq::Util'],
     has_input => [
         somvar_build => {
-            is                  => 'Genome::Model::Build::SomaticVariation',
+            is                  => 'Genome::Model::Build',
             shell_args_position => 1,
             require_user_verify => 0,
             doc                 => 'somatic variation build(s) to ' . 'create mutation spectrum results from',

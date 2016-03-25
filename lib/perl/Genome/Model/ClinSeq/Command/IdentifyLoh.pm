@@ -19,7 +19,7 @@ class Genome::Model::ClinSeq::Command::IdentifyLoh {
             doc => 'Directory where output files will be written.',
         },
         somvar_build => {
-            is  => 'Genome::Model::Build::SomaticVariation',
+            is  => 'Genome::Model::Build',
             doc => 'SomVar build to identify LOH regions in.
         [Either this or a clinseq build is required.]',
             is_optional => 1,

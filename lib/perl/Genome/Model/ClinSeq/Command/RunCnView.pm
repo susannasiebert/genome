@@ -7,7 +7,7 @@ class Genome::Model::ClinSeq::Command::RunCnView {
     is        => ['Command::V2', 'Genome::Model::ClinSeq::Util'],
     has_input => [
         build => {
-            is                  => 'Genome::Model::Build::SomaticVariation',
+            is                  => 'Genome::Model::Build',
             is_many             => 0,
             shell_args_position => 1,
             require_user_verify => 0,
