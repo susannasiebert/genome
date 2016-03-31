@@ -1176,6 +1176,11 @@ sub cufflinks_differential_expression_op {
         destination          => $cufflinks_differential_expression_op,
         destination_property => 'outdir',
     );
+    $workflow->connect_input(
+        input_property       => 'cancer_annotation_db',
+        destination          => $cufflinks_differential_expression_op,
+        destination_property => 'cancer_annotation_db',
+    );
     $workflow->connect_output(
         output_property => 'cufflinks_differential_expression_result',
         source          => $cufflinks_differential_expression_op,
