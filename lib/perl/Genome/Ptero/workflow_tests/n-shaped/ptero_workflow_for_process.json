@@ -155,6 +155,10 @@
                                  "workingDirectory" : "/home/archive/dmorton/genome/lib/perl/Genome"
                               },
                               "service" : "job",
+                              "serviceDataToSave" : [
+                                 "error_message",
+                                 "error"
+                              ],
                               "serviceUrl" : "http://example.com/v1"
                            },
                            {
@@ -169,6 +173,7 @@
                                  },
                                  "options" : {
                                     "errFile" : "/tmp/ptero-lsf-logfile-b9246da9-c08d-43da-b470-adf0b7a37527.err",
+                                    "jobGroup" : "/genome/dmorton",
                                     "numProcessors" : 4,
                                     "outFile" : "/tmp/ptero-lsf-logfile-b9246da9-c08d-43da-b470-adf0b7a37527.out",
                                     "postExecCmd" : "ptero-lsf-post-exec --stderr /tmp/ptero-lsf-logfile-b9246da9-c08d-43da-b470-adf0b7a37527.err --stdout /tmp/ptero-lsf-logfile-b9246da9-c08d-43da-b470-adf0b7a37527.out",
@@ -183,6 +188,11 @@
                                  "user" : "dmorton"
                               },
                               "service" : "job",
+                              "serviceDataToSave" : [
+                                 "error_message",
+                                 "error",
+                                 "lsfJobId"
+                              ],
                               "serviceUrl" : "http://lsf.example.com/v1"
                            }
                         ]
@@ -219,6 +229,10 @@
                                  "workingDirectory" : "/home/archive/dmorton/genome/lib/perl/Genome"
                               },
                               "service" : "job",
+                              "serviceDataToSave" : [
+                                 "error_message",
+                                 "error"
+                              ],
                               "serviceUrl" : "http://example.com/v1"
                            },
                            {
@@ -233,6 +247,7 @@
                                  },
                                  "options" : {
                                     "errFile" : "/tmp/ptero-lsf-logfile-efb38deb-8d8c-4e07-94f6-afd17530b76d.err",
+                                    "jobGroup" : "/genome/dmorton",
                                     "numProcessors" : 4,
                                     "outFile" : "/tmp/ptero-lsf-logfile-efb38deb-8d8c-4e07-94f6-afd17530b76d.out",
                                     "postExecCmd" : "ptero-lsf-post-exec --stderr /tmp/ptero-lsf-logfile-efb38deb-8d8c-4e07-94f6-afd17530b76d.err --stdout /tmp/ptero-lsf-logfile-efb38deb-8d8c-4e07-94f6-afd17530b76d.out",
@@ -247,6 +262,11 @@
                                  "user" : "dmorton"
                               },
                               "service" : "job",
+                              "serviceDataToSave" : [
+                                 "error_message",
+                                 "error",
+                                 "lsfJobId"
+                              ],
                               "serviceUrl" : "http://lsf.example.com/v1"
                            }
                         ]
@@ -283,6 +303,10 @@
                                  "workingDirectory" : "/home/archive/dmorton/genome/lib/perl/Genome"
                               },
                               "service" : "job",
+                              "serviceDataToSave" : [
+                                 "error_message",
+                                 "error"
+                              ],
                               "serviceUrl" : "http://example.com/v1"
                            },
                            {
@@ -297,6 +321,7 @@
                                  },
                                  "options" : {
                                     "errFile" : "/tmp/ptero-lsf-logfile-983a1277-9aae-4993-8d8e-6d323b22c4b9.err",
+                                    "jobGroup" : "/genome/dmorton",
                                     "numProcessors" : 4,
                                     "outFile" : "/tmp/ptero-lsf-logfile-983a1277-9aae-4993-8d8e-6d323b22c4b9.out",
                                     "postExecCmd" : "ptero-lsf-post-exec --stderr /tmp/ptero-lsf-logfile-983a1277-9aae-4993-8d8e-6d323b22c4b9.err --stdout /tmp/ptero-lsf-logfile-983a1277-9aae-4993-8d8e-6d323b22c4b9.out",
@@ -311,6 +336,11 @@
                                  "user" : "dmorton"
                               },
                               "service" : "job",
+                              "serviceDataToSave" : [
+                                 "error_message",
+                                 "error",
+                                 "lsfJobId"
+                              ],
                               "serviceUrl" : "http://lsf.example.com/v1"
                            }
                         ]
@@ -347,6 +377,10 @@
                                  "workingDirectory" : "/home/archive/dmorton/genome/lib/perl/Genome"
                               },
                               "service" : "job",
+                              "serviceDataToSave" : [
+                                 "error_message",
+                                 "error"
+                              ],
                               "serviceUrl" : "http://example.com/v1"
                            },
                            {
@@ -361,6 +395,7 @@
                                  },
                                  "options" : {
                                     "errFile" : "/tmp/ptero-lsf-logfile-92ab40c7-370f-4084-a250-b3265b0f9319.err",
+                                    "jobGroup" : "/genome/dmorton",
                                     "numProcessors" : 4,
                                     "outFile" : "/tmp/ptero-lsf-logfile-92ab40c7-370f-4084-a250-b3265b0f9319.out",
                                     "postExecCmd" : "ptero-lsf-post-exec --stderr /tmp/ptero-lsf-logfile-92ab40c7-370f-4084-a250-b3265b0f9319.err --stdout /tmp/ptero-lsf-logfile-92ab40c7-370f-4084-a250-b3265b0f9319.out",
@@ -375,6 +410,11 @@
                                  "user" : "dmorton"
                               },
                               "service" : "job",
+                              "serviceDataToSave" : [
+                                 "error_message",
+                                 "error",
+                                 "lsfJobId"
+                              ],
                               "serviceUrl" : "http://lsf.example.com/v1"
                            }
                         ]

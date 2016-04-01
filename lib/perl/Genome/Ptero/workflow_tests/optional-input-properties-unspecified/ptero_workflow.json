@@ -94,6 +94,10 @@
                                                 "workingDirectory" : "/home/archive/dmorton/genome/lib/perl/Genome"
                                              },
                                              "service" : "job",
+                                             "serviceDataToSave" : [
+                                                "error_message",
+                                                "error"
+                                             ],
                                              "serviceUrl" : "http://example.com/v1"
                                           },
                                           {
@@ -107,6 +111,7 @@
                                                 },
                                                 "options" : {
                                                    "errFile" : "/tmp/ptero-lsf-logfile-0327f318-8b34-4e00-a478-ee04d0018517.err",
+                                                   "jobGroup" : "/genome/dmorton",
                                                    "outFile" : "/tmp/ptero-lsf-logfile-0327f318-8b34-4e00-a478-ee04d0018517.out",
                                                    "postExecCmd" : "ptero-lsf-post-exec --stderr /tmp/ptero-lsf-logfile-0327f318-8b34-4e00-a478-ee04d0018517.err --stdout /tmp/ptero-lsf-logfile-0327f318-8b34-4e00-a478-ee04d0018517.out",
                                                    "preExecCmd" : "ptero-lsf-pre-exec; exit 0;"
@@ -116,6 +121,11 @@
                                                 "user" : "dmorton"
                                              },
                                              "service" : "job",
+                                             "serviceDataToSave" : [
+                                                "error_message",
+                                                "error",
+                                                "lsfJobId"
+                                             ],
                                              "serviceUrl" : "http://lsf.example.com/v1"
                                           }
                                        ]
