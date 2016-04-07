@@ -1175,11 +1175,6 @@ sub tophat_junctions_absolute_op {
         destination          => $tophat_junctions_absolute_op,
         destination_property => 'outdir',
     );
-    $workflow->connect_input(
-        input_property       => 'cancer_annotation_db',
-        destination          => $cufflinks_differential_expression_op,
-        destination_property => 'cancer_annotation_db',
-    );
     $workflow->connect_output(
         output_property => "${type}tophat_junctions_absolute_result",
         source          => $tophat_junctions_absolute_op,
