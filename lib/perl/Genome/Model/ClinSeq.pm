@@ -1457,6 +1457,11 @@ sub exome_cnv_op {
         destination          => $exome_cnv_op,
         destination_property => 'annotation_build_id',
     );
+    $workflow->connect_input(
+        input_property       => 'cancer_annotation_db',
+        destination          => $exome_cnv_op,
+        destination_property => 'cancer_annotation_db',
+    );
     $workflow->connect_output(
         output_property => 'exome_cnv_result',
         source          => $exome_cnv_op,
