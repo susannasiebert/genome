@@ -816,7 +816,7 @@ sub _resolve_workflow_for_build {
         }
         $workflow->create_link(
             source               => $converge_snv_indel_report_ops[-1],
-            source_property      => 'final_filtered_coding_clean_tsv',
+            source_property      => 'final_filtered_coding_tsv',
             destination          => $mutation_diagram_op,
             destination_property => 'annotated_variants_tsv',
         );
